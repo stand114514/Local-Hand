@@ -95,23 +95,24 @@ class StandHttpServer {
 
       if (contentDisposition != null &&
           contentDisposition.contains('filename=')) {
-        final filename = RegExp(r'filename="([^"]+)"')
+        String filename = "";
+        filename = RegExp(r'filename="([^"]+)"')
             .firstMatch(contentDisposition)!
-            .group(1);
+            .group(1)!;
 
         // final directory = Directory.current;
         final Directory? downloadsDir = await getDownloadsDirectory();
         // final getfilesDir = Directory('${downloadsDir?.path}/loaclhand');
         // print(getfilesDir.path);
 
-        // if (!getfilesDir.existsSync()) {
-        //   getfilesDir.createSync(recursive: true);
-        // }
-
-        final filePath = '${downloadsDir?.path}/$filename';
+        String filePath = '${downloadsDir?.path}/$filename';
+        if (Platform.isAndroid) {
+          filePath = await _getFilePath(filename);
+        }
 
         if (!isStart) {
-          index = receiveFileCallback(StandFile(filename!, filePath, getFileType(filename)));
+          index = receiveFileCallback(
+              StandFile(filename, filePath, getFileType(filename)));
           isStart = true;
         }
 
@@ -128,7 +129,7 @@ class StandHttpServer {
 
         await sink.close();
 
-        receiveFileEndCallback(index);
+        receiveFileEndCallback(index); //进度条完
 
         request.response
           ..statusCode = HttpStatus.ok
@@ -183,4 +184,13 @@ StandType getFileType(String filename) {
     default:
       return StandType.other;
   }
+}
+
+Future<String> _getFilePath(String fileName) async {
+  var dir = Directory('/storage/emulated/0/Download/LocalHand');
+  if (!dir.existsSync()) {
+    dir.createSync(recursive: true);
+  }
+  print("File Name: ${dir.path}/$fileName");
+  return "${dir.path}/$fileName";
 }
