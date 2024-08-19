@@ -79,6 +79,7 @@ class Multicast {
             break;
           case "Connect":
             if (currentState != StandState.nomal) break;
+            currentState = StandState.selfWaiting;
             friendCallback!(FriendMsgType.connect, address); //对方请求连接
             break;
           case "Agree":
@@ -135,7 +136,7 @@ class Multicast {
     if (Platform.isAndroid) {
       AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
       deviceType = "Android";
-      deviceName = androidInfo.model;
+      deviceName = androidInfo.manufacturer;
     } else if (Platform.isIOS) {
       IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
       deviceType = "iOS";
@@ -170,6 +171,8 @@ class Multicast {
     );
     _socket.broadcastEnabled = true;
     _socket.readEventsEnabled = true;
+
+    search();
   }
 
   // 请求连接
@@ -200,6 +203,10 @@ class Multicast {
   void send(String msg, String address) {
     List<int> dataList = utf8.encode(msg);
     _socket.send(dataList, InternetAddress(address), port);
+  }
+
+  void search() async {
+    await boardcast("Stand");
   }
 
   // 广播
@@ -241,18 +248,4 @@ class Multicast {
     }
     return address;
   }
-
-  // void addListener(MessageCall listener) {
-  //   if (!_isStartReceive) {
-  //     _receiveBoardCast();
-  //     _isStartReceive = true;
-  //   }
-  //   _callback.add(listener);
-  // }
-
-  // void removeListener(MessageCall listener) {
-  //   if (_callback.contains(listener)) {
-  //     _callback.remove(listener);
-  //   }
-  // }
 }
