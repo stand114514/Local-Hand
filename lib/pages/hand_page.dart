@@ -63,36 +63,6 @@ class _HandPageState extends State<HandPage> {
     widget.myDispose();
     _scrollController.dispose();
     super.dispose();
-
-    // showDialog(
-    //       context: context,
-    //       builder: (BuildContext context) {
-    //         return AlertDialog(
-    //           title: const Icon(Icons.warning),
-    //           content: const Text('确定要退出并断开吗？'),
-    //           actions: <Widget>[
-    //             Column(
-    //               children: [
-    //                 TextButton(
-    //                   onPressed: () {
-    //                     Navigator.of(context).pop();
-    //                   },
-    //                   child: Text(
-    //                     "确定",
-    //                     style: TextStyle(color: Colors.red[300]),
-    //                   ),
-    //                 ),
-    //                 TextButton(
-    //                   onPressed: () {
-    //                     Navigator.of(context).pop();
-    //                   },
-    //                   child: const Text("取消"),
-    //                 ),
-    //               ],
-    //             )
-    //           ],
-    //         );
-    //       });
   }
 
   int sendSucess(String message, StandType type, String path) {

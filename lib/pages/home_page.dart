@@ -137,9 +137,7 @@ class _HomePageState extends State<HomePage> {
               //不需要返回按钮
               automaticallyImplyLeading: false,
               leading: IconButton(
-                  onPressed: () {
-                    multicast.boardcast("Stand");
-                  },
+                  onPressed: () => multicast.search(),
                   icon: const Icon(Icons.refresh)),
               title: Column(
                 children: [
@@ -160,24 +158,6 @@ class _HomePageState extends State<HomePage> {
             body: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                // 搜索
-                // Container(
-                //     margin: const EdgeInsets.all(10),
-                //     padding: const EdgeInsets.symmetric(horizontal: 20),
-                //     decoration: BoxDecoration(
-                //       border: Border.all(color: colorScheme.primary, width: 1),
-                //       borderRadius: BorderRadius.circular(50),
-                //     ),
-                //     child: const TextField(
-                //       decoration: InputDecoration(
-                //         border: InputBorder.none, // 隐藏TextField自带的边框
-                //         hintText: '搜索',
-                //       ),
-                //     )),
-                // Container(
-                //   height: 10,
-                //   color: Colors.grey[200],
-                // ),
                 value.friends.isEmpty
                     ? Center(
                         child: Column(
@@ -187,14 +167,10 @@ class _HomePageState extends State<HomePage> {
                               size: 80,
                               color: Colors.grey,
                             ),
-                            const Text(
-                              "暂无设备\n请启动其他设备然后刷新",
-                              textAlign: TextAlign.center
-                            ),
+                            const Text("暂无设备\n请启动其他设备然后刷新",
+                                textAlign: TextAlign.center),
                             IconButton(
-                              onPressed: () {
-                                multicast.boardcast("Stand");
-                              },
+                              onPressed: () => multicast.search(),
                               icon: const Icon(Icons.refresh),
                               color: colorScheme.primary,
                             ),
